@@ -4,7 +4,7 @@ import { sumar,restar,multiplicar, dividir } from "./src/modules/matematica.js";
 import { OMDBSearchByPage, OMDBSearchComplete, OMDBGetByImdbID } from "./src/modules/omdb-wrapper.js";
 import Alumno from "./src/models/alumno.js";
 import ValidacionesHelper from "./src/modules/validaciones-helper.js"
-import DateTimeHelper from './src/fechamodules/datetime-helper.js'
+import DateTimeHelper from './src/modules/datetime-helper.js'
 const app = express();
 const port = 3000;
 const alumnosArray = [];
