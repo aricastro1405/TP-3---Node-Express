@@ -4,6 +4,7 @@ import { sumar,restar,multiplicar, dividir } from "./src/modules/matematica.js";
 import { OMDBSearchByPage, OMDBSearchComplete, OMDBGetByImdbID } from "./src/modules/omdb-wrapper.js";
 import Alumno from "./src/models/alumno.js";
 import ValidacionesHelper from "./src/modules/validaciones-helper.js"
+import DateTimeHelper from './src/fechamodules/datetime-helper.js'
 const app = express();
 const port = 3000;
 const alumnosArray = [];
@@ -135,6 +136,53 @@ app.delete("/alumno", (req, res) => {
     res.status(200).json({ message: "Alumno eliminado correctamente" });
   } else {
     res.status(404).json({ error: "Alumno no encontrado" });
+  }
+});
+app.get('/fechas/isDate', (req, res) => {
+  const { fecha } = req.query;
+  if (!fecha || !DateTimeHelper.isDate(fecha)) {
+    res.status(400).send('La fecha proporcionada no es válida.');
+  } else {
+    res.sendStatus(200);
+  }
+});
+app.get('/fechas/getEdadActual', (req, res) => {
+  const { fechaNacimiento } = req.query;
+  if (!fechaNacimiento || !DateTimeHelper.isDate(fechaNacimiento)) {
+    res.status(400).send('La fecha de nacimiento proporcionada no es válida.');
+  } else {
+    const edad = DateTimeHelper.getEdadActual(fechaNacimiento);
+    res.status(200).json({ edad });
+  }
+});
+
+app.get('/fechas/getDiasHastaMiCumple', (req, res) => {
+  const { fechaNacimiento } = req.query;
+  if (!fechaNacimiento || !DateTimeHelper.isDate(fechaNacimiento)) {
+    res.status(400).send('La fecha de nacimiento proporcionada no es válida.');
+  } else {
+    const diasHastaCumple = DateTimeHelper.getDiasHastaMiCumple(fechaNacimiento);
+    res.status(200).json({ diasHastaCumple });
+  }
+});
+
+app.get('/fechas/getDiaTexto', (req, res) => {
+  const { fecha, abr } = req.query;
+  if (!fecha || !DateTimeHelper.isDate(fecha)) {
+    res.status(400).send('La fecha proporcionada no es válida.');
+  } else {
+    const diaTexto = DateTimeHelper.getDiaTexto(fecha, abr === 'true');
+    res.status(200).json({ dia: diaTexto });
+  }
+});
+
+app.get('/fechas/getMesTexto', (req, res) => {
+  const { fecha, abr } = req.query;
+  if (!fecha || !DateTimeHelper.isDate(fecha)) {
+    res.status(400).send('La fecha proporcionada no es válida.');
+  } else {
+    const mesTexto = DateTimeHelper.getMesTexto(fecha, abr === 'true');
+    res.status(200).json({ mes: mesTexto });
   }
 });
 
